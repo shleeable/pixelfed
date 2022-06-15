@@ -74,13 +74,13 @@ class Installer extends Command
             $this->instanceDB();
             $this->instanceRedis();
             $this->instanceURL();
+            $this->laravelSettings();
             $this->instanceSettings();
+            $this->mediaSettings();
             } else {
             $this->info('Installer: Simple...');
             exit;
         }
-
-
     }
 
     protected function envCheck()
@@ -250,17 +250,26 @@ class Installer extends Command
         $this->updateEnvFile('APP_URL', 'https://' . $domain);
     }
 
+    protected function laravelSettings()
+    {
+        $this->info('Laravel Settings:');
+        $session = $this->choice('Select session driver', ["redis", "file", "cookie", "database", "apc", "memcached", "array"], 3);    
+        $cache = $this->choice('Select cache driver', ["redis", "apc", "array", "database", "file", "memcached"], 0);
+        $queue = $this->choice('Select queue driver', ["redis", "apc", "array", "database", "file", "memcached"], 0);
+        $broadcast = $this->choice('Select broadcast driver', ["redis", "apc", "array", "database", "file", "memcached"], 0);
+    }
+    
     protected function instanceSettings()
     {
-        $this->info('Administrator Settings:');
-        $cache = $this->choice('Select cache driver', ["redis", "apc", "array", "database", "file", "memcached"], 0);
-        $session = $this->choice('Select session driver', ["redis", "file", "cookie", "database", "apc", "memcached", "array"], 3);
-
         $this->info('Instance Settings:');
         $open_registration = $this->choice('Allow new registrations?', ['false', 'true'], 0);
         $activitypub_federation = $this->choice('Enable ActivityPub federation?', ['false', 'true'], 1);
         $enforce_email_verification = $this->choice('Enforce email verification?', ['false', 'true'], 1);
         $enable_mobile_apis = $this->choice('Enable mobile app/apis support?', ['false', 'true'], 1);
+    }
+
+    protected function mediaSettings()
+    {        
         $optimize_media = $this->choice('Optimize media uploads? Requires jpegoptim and other dependencies!', ['false', 'true'], 0);
         $image_quality = $this->ask('Set image optimization quality between 1-100. Default is 80%, lower values use less disk space at the expense of image quality.', '80');
             if($image_quality < 1) {
@@ -271,8 +280,13 @@ class Installer extends Command
                 $this->error('Max image quality is 100');
                 exit;
             }
-        $this->notice('Max photo size cannot exceed php.ini `post_max_size` of ' . ini_get('post_max_size'));
+        $this->info(' Note: Max photo size cannot exceed php.ini `post_max_size` of ' . ini_get('post_max_size'));
         $max_photo_size = $this->ask('Max photo upload size in kilobytes. Default 15000 which is equal to 15MB', '15000');
+        	if($max_photo_size * 1024 > $this->parseSize(ini_get('post_max_size'))) {
+        		$this->error('Max photo size (' . (round($max_photo_size / 1000)) . 'M) cannot exceed php.ini `post_max_size` of ' . ini_get('post_max_size'));
+        		exit;
+        	}
+        
         $max_caption_length = $this->ask('Max caption limit. Default to 500, max 5000.', '500');
             if($max_caption_length > 5000) {
                 $this->error('Max caption length is 5000 characters.');
