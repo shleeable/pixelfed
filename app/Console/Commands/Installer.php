@@ -79,7 +79,9 @@ class Installer extends Command
             $this->laravelSettings();
             $this->instanceSettings();
             $this->mediaSettings();
-            } else {
+            $this->postInstall();
+            $this->resetArtisanCache();
+        } else {
             $this->info('Installer: Simple...');
             exit;
         }
@@ -92,7 +94,6 @@ class Installer extends Command
         $this->call('key:generate');
     }
 
-    
     protected function envCheck()
     {
         if( file_exists(base_path('.env')) &&
@@ -161,6 +162,7 @@ class Installer extends Command
     {
         $this->line('');
         $this->info('Checking for proper filesystem permissions...');
+        $this->call('storage:link');
 
         $paths = [
             base_path('bootstrap'),
@@ -285,7 +287,7 @@ class Installer extends Command
         $this->info('Instance Settings:');
         $max_registration = $this->ask('Set Maximum users on this instance.', '1000');
         $open_registration = $this->choice('Allow new registrations?', ['false', 'true'], 0);
-        $enforce_email_verification = $this->choice('Enforce email verification?', ['false', 'true'], 1);
+        $enforce_email_verification = $this->choice('Enforce email verification?', ['false', 'true'], 0);
         $enable_mobile_apis = $this->choice('Enable mobile app/apis support?', ['false', 'true'], 1);
 
         $this->updateEnvFile('PF_MAX_USERS', $max_registration);
@@ -300,9 +302,10 @@ class Installer extends Command
         $activitypub_federation = $this->choice('Enable ActivityPub federation?', ['false', 'true'], 1);
         
         $this->updateEnvFile('ACTIVITY_PUB', $activitypub_federation);
+        $this->updateEnvFile('AP_REMOTE_FOLLOW', $activitypub_federation);
         $this->updateEnvFile('AP_INBOX', $activitypub_federation);
+        $this->updateEnvFile('AP_OUTBOX', $activitypub_federation);
         $this->updateEnvFile('AP_SHAREDINBOX', $activitypub_federation);
-        $this->updateEnvFile('AP_REMOTE_FOLLOW', $activitypub_federation);        
     }
 
     protected function mediaSettings()
@@ -345,27 +348,39 @@ class Installer extends Command
         $this->updateEnvFile('MAX_PHOTO_SIZE', $max_photo_size);
         $this->updateEnvFile('MAX_CAPTION_LENGTH', $max_caption_length);
         $this->updateEnvFile('MAX_ALBUM_LENGTH', $max_album_length);
-        
-
     }
 
-    protected function artisanCommands()
+    protected function dbMigrations()
     {
-        php artisan key:generate
-        php artisan storage:link
-        php artisan migrate --force
-        php artisan import:cities
-        php artisan instance:actor
-        php artisan passport:keys
-        php artisan route:cach
-        php artisan view:cache
+        $this->line('');
+        $this->info(' Note: We recommend running database migrations now!');
+        $confirm = $this->choice('Do you want to run the database migrations?', ['Yes', 'No'], 0);
+
+        if($confirm === 'Yes') {
+        	sleep(3);
+        	$this->call('migrate', ['--force' => true]);
+            $this->call('import:cities');
+            $this->call('instance:actor');
+            $this->call('passport:keys');
+
+            $confirm = $this->choice('Do you want to create an admin account?', ['Yes', 'No'], 0);
+	        if($confirm === 'Yes') {
+	        	$this->call('user:create');
+	        }
+        }
+    }    
+    
+    protected function resetArtisanCache()
+    {
         php artisan config:cache
+        php artisan route:cache
+        php artisan view:cache
     }
-    
-    
+
 #####
 # Installer Functions
 #####
+
     protected function updateEnvFile($key, $value)
     {
         $envPath = app()->environmentFilePath();
