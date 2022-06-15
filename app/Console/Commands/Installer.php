@@ -68,13 +68,14 @@ class Installer extends Command
 
         if($this->installType === 'Production') {
             $this->info('Installer: Production...');
-            $this->updateEnvFile('APP_ENV', 'prod');
             $this->checkPhpDependencies();
             $this->checkFFmpegDependencies();
             $this->checkDiskPermissions();
+            $this->envProd();
             $this->instanceDB();
             $this->instanceRedis();
             $this->instanceURL();
+            $this->activityPubSettings();
             $this->laravelSettings();
             $this->instanceSettings();
             $this->mediaSettings();
@@ -84,6 +85,14 @@ class Installer extends Command
         }
     }
 
+    protected function envProd()
+    {
+        $this->updateEnvFile('APP_ENV', 'production');
+        $this->updateEnvFile('APP_DEBUG', 'false');
+        $this->call('key:generate');
+    }
+
+    
     protected function envCheck()
     {
         if( file_exists(base_path('.env')) &&
@@ -210,6 +219,7 @@ class Installer extends Command
         $redis_password = $this->ask('Set redis password', 'null');
         $redis_port = $this->ask('Set redis port', 6379);
 
+        $this->updateEnvFile('REDIS_SCHEME', 'tcp');
         $this->updateEnvFile('REDIS_HOST', $redis_host);
         $this->updateEnvFile('REDIS_PASSWORD', $redis_password);
         $this->updateEnvFile('REDIS_PORT', $redis_port);
@@ -244,28 +254,55 @@ class Installer extends Command
                 exit;
             }
 
+        $this->updateEnvFile('APP_NAME', $name);
+        $this->updateEnvFile('APP_URL', 'https://' . $domain);
         $this->updateEnvFile('APP_DOMAIN', $domain);
         $this->updateEnvFile('ADMIN_DOMAIN', $domain);
         $this->updateEnvFile('SESSION_DOMAIN', $domain);
-        $this->updateEnvFile('APP_URL', 'https://' . $domain);
     }
 
     protected function laravelSettings()
     {
-        $this->info('Laravel Settings:');
-        $session = $this->choice('Select session driver', ["redis", "file", "cookie", "database", "apc", "memcached", "array"], 3);    
+        $this->line('');
+        $this->info('Laravel Settings (Defaults are recommended):');
+        $session = $this->choice('Select session driver', ["database", "file", "cookie", "redis", "memcached", "array"], 0);    
         $cache = $this->choice('Select cache driver', ["redis", "apc", "array", "database", "file", "memcached"], 0);
-        $queue = $this->choice('Select queue driver', ["redis", "apc", "array", "database", "file", "memcached"], 0);
-        $broadcast = $this->choice('Select broadcast driver', ["redis", "apc", "array", "database", "file", "memcached"], 0);
+        $queue = $this->choice('Select queue driver', ["redis", "database", "sync", "beanstalkd", "sqs", "null"], 0);
+        $broadcast = $this->choice('Select broadcast driver', ["log", "redis", "pusher", "null"], 0);
+        $log = $this->choice('Select Log Channel', ["stack", "single", "daily", "stderr", "syslog", "null"], 0);
+        $horizon = $this->ask('Set Horizon Prefix [ex: horizon-]', 'horizon-');
+
+        $this->updateEnvFile('SESSION_DRIVER', $session);
+        $this->updateEnvFile('CACHE_DRIVER', $cache);
+        $this->updateEnvFile('QUEUE_DRIVER', $cache);
+        $this->updateEnvFile('BROADCAST_DRIVER', $cache);
+        $this->updateEnvFile('LOG_CHANNEL', $log);
+        $this->updateEnvFile('HORIZON_PREFIX', $horizon);
     }
     
     protected function instanceSettings()
     {
         $this->info('Instance Settings:');
+        $max_registration = $this->ask('Set Maximum users on this instance.', '1000');
         $open_registration = $this->choice('Allow new registrations?', ['false', 'true'], 0);
-        $activitypub_federation = $this->choice('Enable ActivityPub federation?', ['false', 'true'], 1);
         $enforce_email_verification = $this->choice('Enforce email verification?', ['false', 'true'], 1);
         $enable_mobile_apis = $this->choice('Enable mobile app/apis support?', ['false', 'true'], 1);
+
+        $this->updateEnvFile('PF_MAX_USERS', $max_registration);
+        $this->updateEnvFile('OPEN_REGISTRATION', $open_registration);
+        $this->updateEnvFile('ENFORCE_EMAIL_VERIFICATION', $enforce_email_verification);
+        $this->updateEnvFile('OAUTH_ENABLED', $enable_mobile_apis);
+        $this->updateEnvFile('EXP_EMC', $enable_mobile_apis);
+    }
+
+    protected function activityPubSettings()
+    {    
+        $activitypub_federation = $this->choice('Enable ActivityPub federation?', ['false', 'true'], 1);
+        
+        $this->updateEnvFile('ACTIVITY_PUB', $activitypub_federation);
+        $this->updateEnvFile('AP_INBOX', $activitypub_federation);
+        $this->updateEnvFile('AP_SHAREDINBOX', $activitypub_federation);
+        $this->updateEnvFile('AP_REMOTE_FOLLOW', $activitypub_federation);        
     }
 
     protected function mediaSettings()
@@ -302,6 +339,13 @@ class Installer extends Command
                         $this->error('Max album length is 10 photos per album.');
                         exit;
                 }
+        
+        $this->updateEnvFile('PF_OPTIMIZE_IMAGES', $optimize_media);
+        $this->updateEnvFile('IMAGE_QUALITY', $image_quality);
+        $this->updateEnvFile('MAX_PHOTO_SIZE', $max_photo_size);
+        $this->updateEnvFile('MAX_CAPTION_LENGTH', $max_caption_length);
+        $this->updateEnvFile('MAX_ALBUM_LENGTH', $max_album_length);
+        
 
     }
 
