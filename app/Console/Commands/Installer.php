@@ -65,7 +65,7 @@ class Installer extends Command
         $this->envCheck();
         $this->envCreate();
         $this->installType();
- 
+
         if($this->installType === 'Production') {
             $this->info('Installer: Production...');
             $this->checkPhpDependencies();
@@ -75,19 +75,19 @@ class Installer extends Command
             $this->instanceRedis();
             $this->instanceURL();
             $this->instanceSettings();
-	    } else {
+            } else {
             $this->info('Installer: Simple...');
             exit;
         }
-        
+
 
     }
-    
+
     protected function envCheck()
     {
         if( file_exists(base_path('.env')) &&
-        	filesize(base_path('.env')) !== 0 &&
-        	!$this->option('dangerously-overwrite-env')
+                filesize(base_path('.env')) !== 0 &&
+                !$this->option('dangerously-overwrite-env')
         ) {
             $this->line('');
             $this->error('Existing .env File Found - Installation Aborted');
@@ -104,11 +104,12 @@ class Installer extends Command
             exec('cp .env.installer .env');
             $this->updateEnvFile('APP_ENV', 'setup');
         }
-    
+    }
+
     protected function installType()
     {
-    	$type = $this->choice('Select installation type', ['Simple', 'Production'], 1);
-		$this->installType = $type;
+        $type = $this->choice('Select installation type', ['Simple', 'Production'], 1);
+                $this->installType = $type;
     }
 
     protected function checkPhpDependencies()
@@ -123,7 +124,7 @@ class Installer extends Command
             'json',
             'mbstring',
             'openssl',
-        ];        
+        ];
         foreach($extensions as $ext) {
             if(extension_loaded($ext) == false) {
                 $this->error("\"{$ext}\" PHP extension not found, aborting installation");
@@ -132,7 +133,7 @@ class Installer extends Command
         }
         $this->info("- Required PHP extensions found!");
     }
-    
+
     protected function checkFFmpegDependencies()
     {
         $this->line(' ');
@@ -145,9 +146,8 @@ class Installer extends Command
         } else {
             $this->info('- Found FFmpeg!');
         }
-	    $this->checkDiskPermissions();
-    }    
-    
+    }
+
     protected function checkDiskPermissions()
     {
         $this->line('');
@@ -168,11 +168,11 @@ class Installer extends Command
                 $this->info("- Found valid permissions for {$path}");
             }
         }
-        $this->instanceDB();
     }
-    
+
     protected function instanceDB()
     {
+        $this->line('');
         $this->info('Database Settings:');
         $database = $this->choice('Select database driver', ['mysql', 'pgsql'], 0);
         $database_host = $this->ask('Select database host', '127.0.0.1');
@@ -188,21 +188,22 @@ class Installer extends Command
         $this->updateEnvFile('DB_PORT', $database_port);
         $this->updateEnvFile('DB_DATABASE', $database_db);
         $this->updateEnvFile('DB_USERNAME', $database_username);
-        $this->updateEnvFile('DB_PASSWORD', $database_password);        
-        
+        $this->updateEnvFile('DB_PASSWORD', $database_password);
+
         $this->info('Testing Database...');
         $dsn = "{$database}:dbname={$database_db};host={$database_host};port={$database_port};";
         try {
-        	$dbh = new PDO($dsn, $database_username, $database_password, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+                $dbh = new PDO($dsn, $database_username, $database_password, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
         } catch (\PDOException $e) {
-        	$this->error('Cannot connect to database, check your details and try again');
-        	exit;
+                $this->error('Cannot connect to database, check your details and try again');
+                exit;
         }
-        $this->createEnv();
+        $this->info('- Connected to DB Successfully');
     }
 
     protected function instanceRedis()
     {
+        $this->line('');
         $this->info('Redis Settings:');
         $redis_client = $this->choice('Set redis client (PHP extension)', ['phpredis', 'predis'], 0);
         $redis_host = $this->ask('Set redis host', 'localhost');
@@ -211,21 +212,22 @@ class Installer extends Command
 
         $this->updateEnvFile('REDIS_HOST', $redis_host);
         $this->updateEnvFile('REDIS_PASSWORD', $redis_password);
-        $this->updateEnvFile('REDIS_PORT', $redis_port);        
-        
-        $this->info('Testing Database...');
+        $this->updateEnvFile('REDIS_PORT', $redis_port);
+
+        $this->info('Testing Redis...');
         $redis = Redis::connection();
             if($redis->ping()) {
-                $this->info('- Found redis!');
+                $this->info('- Connected to Redis Successfully!');
             } else {
                 $this->error('Cannot connect to Redis, check your details and try again');
                 exit;
             }
-        $this->instanceURL();
     }
-    
+
     protected function instanceURL()
     {
+        $this->line('');
+        $this->info('Instance URL Settings:');
         $name = $this->ask('Site name [ex: Pixelfed]', 'Pixelfed');
 
         $domain = $this->ask('Site Domain [ex: pixelfed.com]');
@@ -242,18 +244,18 @@ class Installer extends Command
                 exit;
             }
 
-        $this->updateEnvFile('APP_DOMAIN', $domain ?? 'example.org');
-        $this->updateEnvFile('ADMIN_DOMAIN', $domain ?? 'example.org');
-        $this->updateEnvFile('SESSION_DOMAIN', $domain ?? 'example.org');
+        $this->updateEnvFile('APP_DOMAIN', $domain);
+        $this->updateEnvFile('ADMIN_DOMAIN', $domain);
+        $this->updateEnvFile('SESSION_DOMAIN', $domain);
         $this->updateEnvFile('APP_URL', 'https://' . $domain);
-        $this->instanceSettings();
     }
 
     protected function instanceSettings()
+    {
         $this->info('Administrator Settings:');
         $cache = $this->choice('Select cache driver', ["redis", "apc", "array", "database", "file", "memcached"], 0);
         $session = $this->choice('Select session driver', ["redis", "file", "cookie", "database", "apc", "memcached", "array"], 3);
-        
+
         $this->info('Instance Settings:');
         $open_registration = $this->choice('Allow new registrations?', ['false', 'true'], 0);
         $activitypub_federation = $this->choice('Enable ActivityPub federation?', ['false', 'true'], 1);
@@ -278,20 +280,20 @@ class Installer extends Command
             }
 
         $max_album_length = $this->ask('Max photos allowed per album. Choose a value between 1 and 10.', '4');
-        	if($max_album_length < 1) {
-        		$this->error('Min album length is 1 photos per album.');
-        		exit;
-        	}
-        	if($max_album_length > 10) {
-        		$this->error('Max album length is 10 photos per album.');
-        		exit;
-        	}
+                if($max_album_length < 1) {
+                        $this->error('Min album length is 1 photos per album.');
+                        exit;
+                }
+                if($max_album_length > 10) {
+                        $this->error('Max album length is 10 photos per album.');
+                        exit;
+                }
 
     }
-    
+
 #####
 # Installer Functions
-#####    
+#####
     protected function updateEnvFile($key, $value)
     {
         $envPath = app()->environmentFilePath();
@@ -323,13 +325,13 @@ class Installer extends Command
     }
 
     protected function parseSize($size) {
-    	$unit = preg_replace('/[^bkmgtpezy]/i', '', $size);
-    	$size = preg_replace('/[^0-9\.]/', '', $size);
-    	if ($unit) {
-    		return round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
-    	}
-    	else {
-    		return round($size);
-    	}
+        $unit = preg_replace('/[^bkmgtpezy]/i', '', $size);
+        $size = preg_replace('/[^0-9\.]/', '', $size);
+        if ($unit) {
+                return round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
+        }
+        else {
+                return round($size);
+        }
     }
 }
