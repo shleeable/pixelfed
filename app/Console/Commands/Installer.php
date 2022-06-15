@@ -68,7 +68,7 @@ class Installer extends Command
 
         if($this->installType === 'Production') {
             $this->info('Installer: Production...');
-            $this->checkPhpDependencies();
+            $this->checkPHPDependencies();
             $this->checkFFmpegDependencies();
             $this->checkDiskPermissions();
             $this->envProd();
@@ -79,19 +79,11 @@ class Installer extends Command
             $this->laravelSettings();
             $this->instanceSettings();
             $this->mediaSettings();
-            $this->postInstall();
             $this->resetArtisanCache();
         } else {
             $this->info('Installer: Simple...');
             exit;
         }
-    }
-
-    protected function envProd()
-    {
-        $this->updateEnvFile('APP_ENV', 'production');
-        $this->updateEnvFile('APP_DEBUG', 'false');
-        $this->call('key:generate');
     }
 
     protected function envCheck()
@@ -122,7 +114,7 @@ class Installer extends Command
                 $this->installType = $type;
     }
 
-    protected function checkPhpDependencies()
+    protected function checkPHPDependencies()
     {
         $this->line(' ');
         $this->info('Checking for required php extensions...');
@@ -162,7 +154,7 @@ class Installer extends Command
     {
         $this->line('');
         $this->info('Checking for proper filesystem permissions...');
-        $this->call('storage:link');
+        $this->callSilently('storage:link');
 
         $paths = [
             base_path('bootstrap'),
@@ -181,6 +173,16 @@ class Installer extends Command
         }
     }
 
+    protected function envProd()
+    {
+        $this->line('');
+        $this->info('Enabling production');
+        
+        $this->updateEnvFile('APP_ENV', 'production');
+        $this->updateEnvFile('APP_DEBUG', 'false');
+        $this->call('key:generate', ['--force' => true]);
+    }    
+    
     protected function instanceDB()
     {
         $this->line('');
@@ -284,6 +286,7 @@ class Installer extends Command
     
     protected function instanceSettings()
     {
+        $this->line('');
         $this->info('Instance Settings:');
         $max_registration = $this->ask('Set Maximum users on this instance.', '1000');
         $open_registration = $this->choice('Allow new registrations?', ['false', 'true'], 0);
@@ -299,6 +302,8 @@ class Installer extends Command
 
     protected function activityPubSettings()
     {    
+        $this->line('');
+        $this->info('Federation Settings:');
         $activitypub_federation = $this->choice('Enable ActivityPub federation?', ['false', 'true'], 1);
         
         $this->updateEnvFile('ACTIVITY_PUB', $activitypub_federation);
@@ -310,7 +315,9 @@ class Installer extends Command
 
     protected function mediaSettings()
     {        
-        $optimize_media = $this->choice('Optimize media uploads? Requires jpegoptim and other dependencies!', ['false', 'true'], 0);
+        $this->line('');
+        $this->info('Media Settings:');
+        $optimize_media = $this->choice('Optimize media uploads? Requires jpegoptim and other dependencies!', ['false', 'true'], 1);
         $image_quality = $this->ask('Set image optimization quality between 1-100. Default is 80%, lower values use less disk space at the expense of image quality.', '80');
             if($image_quality < 1) {
                 $this->error('Min image quality is 1. You should avoid such a low value, 60 at minimum is recommended.');
@@ -353,7 +360,7 @@ class Installer extends Command
     protected function dbMigrations()
     {
         $this->line('');
-        $this->info(' Note: We recommend running database migrations now!');
+        $this->info('Note: We recommend running database migrations now!');
         $confirm = $this->choice('Do you want to run the database migrations?', ['Yes', 'No'], 0);
 
         if($confirm === 'Yes') {
@@ -372,9 +379,9 @@ class Installer extends Command
     
     protected function resetArtisanCache()
     {
-        php artisan config:cache
-        php artisan route:cache
-        php artisan view:cache
+            $this->call('php artisan config:cache');
+            $this->call('php artisan route:cache');
+            $this->call('php artisan view:cache');
     }
 
 #####
