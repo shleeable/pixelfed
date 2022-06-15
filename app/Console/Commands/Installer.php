@@ -79,6 +79,7 @@ class Installer extends Command
             $this->laravelSettings();
             $this->instanceSettings();
             $this->mediaSettings();
+            $this->dbMigrations();
             $this->resetArtisanCache();
         } else {
             $this->info('Installer: Simple...');
@@ -379,9 +380,9 @@ class Installer extends Command
     
     protected function resetArtisanCache()
     {
-            $this->call('php artisan config:cache');
-            $this->call('php artisan route:cache');
-            $this->call('php artisan view:cache');
+            $this->call('config:cache');
+            $this->call('route:cache');
+            $this->call('view:cache');
     }
 
 #####
