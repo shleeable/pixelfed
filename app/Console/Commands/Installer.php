@@ -68,6 +68,7 @@ class Installer extends Command
 
         if($this->installType === 'Production') {
             $this->info('Installer: Production...');
+            $this->updateEnvFile('APP_ENV', 'prod');
             $this->checkPhpDependencies();
             $this->checkFFmpegDependencies();
             $this->checkDiskPermissions();
@@ -102,7 +103,6 @@ class Installer extends Command
         $this->line('');
         if(!file_exists(app()->environmentFilePath())) {
             exec('cp .env.installer .env');
-            $this->updateEnvFile('APP_ENV', 'setup');
         }
     }
 
@@ -305,6 +305,20 @@ class Installer extends Command
 
     }
 
+    protected function artisanCommands()
+    {
+        php artisan key:generate
+        php artisan storage:link
+        php artisan migrate --force
+        php artisan import:cities
+        php artisan instance:actor
+        php artisan passport:keys
+        php artisan route:cach
+        php artisan view:cache
+        php artisan config:cache
+    }
+    
+    
 #####
 # Installer Functions
 #####
