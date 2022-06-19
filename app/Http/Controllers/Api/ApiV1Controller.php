@@ -2017,19 +2017,6 @@ class ApiV1Controller extends Controller
         }
 
 		$res = collect($feed)
-		->filter(function($k) use($min, $max) {
-			if(!$min && !$max) {
-				return true;
-			}
-
-			if($min) {
-				return $min != $k;
-			}
-
-			if($max) {
-				return $max != $k;
-			}
-		})
 		->map(function($k) use($user) {
 			$status = StatusService::getMastodon($k);
 			if(!$status || !isset($status['account']) || !isset($status['account']['id'])) {
