@@ -56,7 +56,6 @@ class AccountController extends Controller
 			'a'    => 'nullable|alpha_dash',
 		]);
 
-		$action = $request->input('a');
 		$allowed = ['like', 'follow'];
 		$timeago = Carbon::now()->subMonths(3);
 
@@ -134,9 +133,6 @@ class AccountController extends Controller
 
 	public function directMessage(Request $request, $id)
 	{
-		$profile = Profile::where('id', '!=', $request->user()->profile_id)
-			// ->whereNull('domain')
-			->findOrFail($id);
 		return view('account.directmessage', compact('id'));
 	}
 
@@ -511,10 +507,6 @@ class AccountController extends Controller
 		} else {
 			return false;
 		}
-	}
-
-	public function accountRestored(Request $request)
-	{
 	}
 
 	public function accountMutes(Request $request)

@@ -130,7 +130,6 @@ trait AdminUserController
 			'message' => 'required|string|min:5|max:500'
 		]);
 		$user = User::findOrFail($id);
-		$profile = $user->profile;
 		$message = $request->input('message');
 		Mail::to($user->email)->send(new AdminMessage($message));
 		ModLogService::boot()
@@ -170,7 +169,6 @@ trait AdminUserController
 			'message' => 'required|string|min:5|max:500'
 		]);
 		$user = User::findOrFail($id);
-		$profile = $user->profile;
 		$msg = $request->input('message');
 		ModLogService::boot()
 			->objectUid($user->id)
@@ -289,7 +287,6 @@ trait AdminUserController
 		$user = User::findOrFail($id);
 		$uid = $request->user()->id;
 		$mid = $request->input('mid');
-		$ml = ModLog::whereUserId($uid)->findOrFail($mid)->delete();
 		$msg = "Successfully deleted modlog comment!";
 		$request->session()->flash('status', $msg);
 		return redirect('/i/admin/users/modlogs/' . $user->id);
