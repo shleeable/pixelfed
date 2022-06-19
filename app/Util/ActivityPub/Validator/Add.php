@@ -32,7 +32,7 @@ class Add {
 			'object.attachment.url' => 'required|url',
 			'object.attachment.mediaType' => [
 				'required',
-				Rule::in(['image/jpeg', 'image/png'])
+				Rule::in(['image/jpeg', 'image/png', 'image/apng'])
 			]
 		])->passes();
 

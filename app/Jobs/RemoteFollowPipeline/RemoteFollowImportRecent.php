@@ -45,6 +45,7 @@ class RemoteFollowImportRecent implements ShouldQueue
             'image/jpg',
             'image/jpeg',
             'image/png',
+            'image/apng',
             'image/gif',
         ];
     }

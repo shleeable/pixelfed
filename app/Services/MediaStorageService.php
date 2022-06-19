@@ -125,6 +125,7 @@ class MediaStorageService {
 		$mimes = [
 			'image/jpeg',
 			'image/png',
+			'image/apng',
 			'video/mp4'
 		];
 
@@ -144,6 +145,7 @@ class MediaStorageService {
 
 		switch ($mime) {
 			case 'image/png':
+			case 'image/apng':
 				$ext = '.png';
 				break;
 
@@ -204,6 +206,7 @@ class MediaStorageService {
 		$mimes = [
 			'image/jpeg',
 			'image/png',
+			'image/apng',
 		];
 
 		$mime = $head['mime'];

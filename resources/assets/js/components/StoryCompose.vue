@@ -234,6 +234,7 @@
 				mimes: [
 					'image/jpeg',
 					'image/png',
+					'image/apng',
 					// 'video/mp4'
 				],
 				page: 'landing',

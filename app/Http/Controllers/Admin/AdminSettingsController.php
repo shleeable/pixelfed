@@ -22,8 +22,8 @@ trait AdminSettingsController
 		$cloud_ready = !empty(config('filesystems.disks.' . $cloud_disk . '.key')) && !empty(config('filesystems.disks.' . $cloud_disk . '.secret'));
 		$types = explode(',', ConfigCacheService::get('pixelfed.media_types'));
 		$rules = ConfigCacheService::get('app.rules') ? json_decode(ConfigCacheService::get('app.rules'), true) : null;
-		$jpeg = in_array('image/jpg', $types) ? true : in_array('image/jpeg', $types);
-		$png = in_array('image/png', $types);
+		$jpeg = in_array('image/jpg', $types) || in_array('image/jpeg', $types);
+		$png = in_array('image/png', $types)|| in_array('image/apng', $types);
 		$gif = in_array('image/gif', $types);
 		$mp4 = in_array('video/mp4', $types);
 		$webp = in_array('image/webp', $types);
@@ -60,6 +60,7 @@ trait AdminSettingsController
 			'image_quality' => 'nullable|integer|min:1|max:100',
 			'type_jpeg' => 'nullable',
 			'type_png' => 'nullable',
+			'type_apng' => 'nullable',
 			'type_gif' => 'nullable',
 			'type_mp4' => 'nullable',
 			'type_webp' => 'nullable',
@@ -84,6 +85,7 @@ trait AdminSettingsController
 		$mimes = [
 			'type_jpeg' => 'image/jpeg',
 			'type_png' => 'image/png',
+			'image_apng' => 'image/apng',
 			'type_gif' => 'image/gif',
 			'type_mp4' => 'video/mp4',
 			'type_webp' => 'image/webp',

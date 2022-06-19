@@ -149,7 +149,7 @@ class InstallController extends Controller
     	$this->updateConfig('ENFORCE_EMAIL_VERIFICATION=true', 'ENFORCE_EMAIL_VERIFICATION=' .($request->input('mail_address_verify') ? 'true' : 'false'));
     	$this->updateConfig('PF_OPTIMIZE_IMAGES=true', 'PF_OPTIMIZE_IMAGES=' .($request->input('optimize_media') ? 'true' : 'false'));
     	$this->updateConfig('MAX_PHOTO_SIZE=15000', 'MAX_PHOTO_SIZE=' .($request->input('max_upload_size') * 1000));
-    	$this->updateConfig('MEDIA_TYPES=image/jpeg,image/png,image/gif', 'MEDIA_TYPES=' .implode(',', $request->input('mime_types')));
+    	$this->updateConfig('MEDIA_TYPES=image/jpeg,image/png,image/apng,image/gif', 'MEDIA_TYPES=' .implode(',', $request->input('mime_types')));
     	$this->updateConfig('OAUTH_ENABLED=true', 'OAUTH_ENABLED=true');
 
     	if($request->input('optimize_media') == true) {

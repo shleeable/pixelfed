@@ -1482,6 +1482,7 @@ class ApiV1Controller extends Controller
 		switch ($media->mime) {
 			case 'image/jpeg':
 			case 'image/png':
+			case 'image/apng':
 				ImageOptimize::dispatch($media);
 				break;
 
@@ -1652,6 +1653,7 @@ class ApiV1Controller extends Controller
 		switch ($media->mime) {
 			case 'image/jpeg':
 			case 'image/png':
+			case 'image/apng':
 				ImageOptimize::dispatch($media);
 				break;
 

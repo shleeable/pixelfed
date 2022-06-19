@@ -23,6 +23,7 @@ class ImageUpdate implements ShouldQueue
 	protected $protectedMimes = [
 		'image/jpeg',
 		'image/png',
+		'image/apng',
 		'image/webp'
 	];
 

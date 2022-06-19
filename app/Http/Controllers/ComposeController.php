@@ -144,6 +144,7 @@ class ComposeController extends Controller
 		switch ($media->mime) {
 			case 'image/jpeg':
 			case 'image/png':
+			case 'image/apng':
 			case 'image/webp':
 			ImageOptimize::dispatch($media);
 			break;
@@ -710,6 +711,7 @@ class ComposeController extends Controller
 		switch ($media->mime) {
 			case 'image/jpeg':
 			case 'image/png':
+			case 'image/apng':
 			case 'video/mp4':
 				$finished = config_cache('pixelfed.cloud_storage') ? (bool) $media->cdn_url : (bool) $media->processed_at;
 				break;

@@ -48,7 +48,7 @@ class CustomEmojiService
 				!isset($json['icon']['url']) ||
 				!isset($json['icon']['type']) ||
 				$json['icon']['type'] !== 'Image' ||
-				!in_array($json['icon']['mediaType'], ['image/jpeg', 'image/png', 'image/jpg'])
+				!in_array($json['icon']['mediaType'], ['image/jpeg', 'image/png', 'image/apng', 'image/jpg'])
 			) {
 				return;
 			}
