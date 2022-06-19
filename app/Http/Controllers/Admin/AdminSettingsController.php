@@ -23,7 +23,7 @@ trait AdminSettingsController
 		$types = explode(',', ConfigCacheService::get('pixelfed.media_types'));
 		$rules = ConfigCacheService::get('app.rules') ? json_decode(ConfigCacheService::get('app.rules'), true) : null;
 		$jpeg = in_array('image/jpg', $types) || in_array('image/jpeg', $types);
-		$png = in_array('image/png', $types)|| in_array('image/apng', $types);
+		$png = in_array('image/png', $types) || in_array('image/apng', $types);
 		$gif = in_array('image/gif', $types);
 		$mp4 = in_array('video/mp4', $types);
 		$webp = in_array('image/webp', $types);
@@ -86,7 +86,6 @@ trait AdminSettingsController
 			'type_jpeg' => 'image/jpeg',
 			'type_png' => 'image/png',
 			'type_apng' => 'image/apng',
-			'image_apng' => 'image/apng',
 			'type_gif' => 'image/gif',
 			'type_mp4' => 'video/mp4',
 			'type_webp' => 'image/webp',
