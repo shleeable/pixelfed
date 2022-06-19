@@ -85,6 +85,7 @@ trait AdminSettingsController
 		$mimes = [
 			'type_jpeg' => 'image/jpeg',
 			'type_png' => 'image/png',
+			'type_apng' => 'image/apng',
 			'image_apng' => 'image/apng',
 			'type_gif' => 'image/gif',
 			'type_mp4' => 'video/mp4',
