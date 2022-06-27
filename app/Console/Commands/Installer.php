@@ -72,6 +72,7 @@ class Installer extends Command
             $this->checkFFmpegDependencies();
             $this->checkOptimiseDependencies();
             $this->checkDiskPermissions();
+            $this->resetArtisanCache();
             $this->envProd();
             $this->instanceDB();
             $this->instanceRedis();
@@ -82,10 +83,10 @@ class Installer extends Command
             $this->mediaSettings();
             $this->dbMigrations();
             $this->validateEnv();
-            $this->resetArtisanCache();
         } else {
             $this->info('Installer: Simple...');
             $this->checkDiskPermissions();
+            $this->resetArtisanCache();
             $this->envProd();
             $this->instanceDB();
             $this->instanceRedis();
@@ -94,7 +95,6 @@ class Installer extends Command
             $this->instanceSettings();
             $this->dbMigrations();
             $this->validateEnv();
-            $this->resetArtisanCache();
         }
     }
 
