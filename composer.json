@@ -37,7 +37,7 @@
 		"pixelfed/laravel-snowflake": "^2.0",
 		"pixelfed/zttp": "^0.4",
 		"pragmarx/google2fa": "^8.0",
-		"predis/predis": "^1.1",
+		"predis/predis": "^2.0",
 		"spatie/laravel-backup": "^6.0.0",
 		"spatie/laravel-image-optimizer": "^1.1",
 		"stevebauman/purify": "3.0.*",
