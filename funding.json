@@ -20,7 +20,7 @@
                 "url": "https://github.com/pixelfed/pixelfed"
             },
             "repositoryUrl": {
-                "url": "https://github.com/pixelfed/pixelfed",
+                "url": "https://github.com/pixelfed/pixelfed"
             },
             "licenses": ["spdx:AGPL-3.0"],
             "tags": ["activitypub", "fediverse", "laravel", "pixelfed"]
