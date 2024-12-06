@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('group_posts', function (Blueprint $table) {
+            $table->dropUnique(['status_id']);
             $table->dropColumn('status_id');
             $table->dropColumn('reply_child_id');
             $table->dropColumn('in_reply_to_id');
