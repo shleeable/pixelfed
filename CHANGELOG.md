@@ -9,6 +9,9 @@
 - Update ApiV1Controller, fix bookmark bug. Closes #5216 ([9f7cc52c](https://github.com/pixelfed/pixelfed/commit/9f7cc52c))
 - Update Status caption logic, stop storing duplicate html caption in db and defer to cached StatusService rendering ([9eeb7b67](https://github.com/pixelfed/pixelfed/commit/9eeb7b67))
 - Update AutolinkService, optimize lookups ([eac2c196](https://github.com/pixelfed/pixelfed/commit/eac2c196))
+- Update DirectMessageController, remove 72h limit for admins ([639df410](https://github.com/pixelfed/pixelfed/commit/639df410))
+- Update StatusService, fix newlines ([56c07b7a](https://github.com/pixelfed/pixelfed/commit/56c07b7a))
+-  ([](https://github.com/pixelfed/pixelfed/commit/))
 -  ([](https://github.com/pixelfed/pixelfed/commit/))
 
 ## [v0.12.4 (2024-11-08)](https://github.com/pixelfed/pixelfed/compare/v0.12.4...dev)

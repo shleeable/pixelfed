@@ -11,7 +11,7 @@ class StatusTransformer extends Fractal\TransformerAbstract
 {
     public function transform(Status $status)
     {
-        $content = $status->caption ? Autolink::create()->autolink($status->caption) : null;
+        $content = $status->caption ? nl2br(Autolink::create()->autolink($status->caption)) : null;
 
         return [
             '@context' => [
