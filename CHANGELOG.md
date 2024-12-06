@@ -11,7 +11,7 @@
 - Update AutolinkService, optimize lookups ([eac2c196](https://github.com/pixelfed/pixelfed/commit/eac2c196))
 - Update DirectMessageController, remove 72h limit for admins ([639df410](https://github.com/pixelfed/pixelfed/commit/639df410))
 - Update StatusService, fix newlines ([56c07b7a](https://github.com/pixelfed/pixelfed/commit/56c07b7a))
--  ([](https://github.com/pixelfed/pixelfed/commit/))
+- Update confirm email template, add plaintext link. Fixes #5375 ([45986707](https://github.com/pixelfed/pixelfed/commit/45986707))
 -  ([](https://github.com/pixelfed/pixelfed/commit/))
 
 ## [v0.12.4 (2024-11-08)](https://github.com/pixelfed/pixelfed/compare/v0.12.4...dev)
