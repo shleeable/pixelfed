@@ -97,6 +97,7 @@ return [
 		'modlog' => 'modlog',
 		'post' => 'Beitrag',
 		'story' => 'Story',
+		'noneFound' => 'Keine Benachrichtigungen',
 	],
 
 	'post' => [
@@ -176,11 +177,27 @@ return [
 	],
 
 	'timeline' => [
-		'peopleYouMayKnow' => 'Leute, die du vielleicht kennst'
+		'peopleYouMayKnow' => 'Leute, die du vielleicht kennst',
+		
+		'onboarding' => [
+			'welcome' => 'Willkommen',
+			'thisIsYourHomeFeed' => 'Dies ist deine Startseite, ein chronologischer Strom von Beiträgen von Accounts, denen du folgst.',
+			'letUsHelpYouFind' => 'Lass uns dir helfen, ein paar interessante Leute zu finden, denen du folgen kannst'
+			'refreshFeed' => 'Aktualisiere meinen Feed',
+		],
 	],
 
 	'hashtags' => [
 		'emptyFeed' => 'Wir können keine Beiträge mit diesem Hashtag finden'
+	],
+	
+	'report' => [
+		'report' => 'Melden',
+		'selectReason' => 'Wähle einen Grund',
+		'reported' => 'Gemeldet',
+		'sendingReport' => 'Sende Meldung',
+		'thanksMsg' => 'Danke für deine Meldung! Damit erhöhst du die Sicherheit der Community!',
+		'contactAdminMsg' => 'Wenn du die Administration wegen diesem Beitrag oder dieser Meldung kontaktieren möchtest',
 	],
 
 ];
