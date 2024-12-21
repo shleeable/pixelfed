@@ -12,6 +12,9 @@
 - Update DirectMessageController, remove 72h limit for admins ([639df410](https://github.com/pixelfed/pixelfed/commit/639df410))
 - Update StatusService, fix newlines ([56c07b7a](https://github.com/pixelfed/pixelfed/commit/56c07b7a))
 - Update confirm email template, add plaintext link. Fixes #5375 ([45986707](https://github.com/pixelfed/pixelfed/commit/45986707))
+- Update UserVerifyEmail command ([77da9ad8](https://github.com/pixelfed/pixelfed/commit/77da9ad8))
+- Update StatusStatelessTransformer, refactor the caption field to be compliant with the MastoAPI. Fixes #5364 ([79039ba5](https://github.com/pixelfed/pixelfed/commit/79039ba5))
+- Update mailgun config, add endpoint and scheme ([271d5114](https://github.com/pixelfed/pixelfed/commit/271d5114))
 -  ([](https://github.com/pixelfed/pixelfed/commit/))
 
 ## [v0.12.4 (2024-11-08)](https://github.com/pixelfed/pixelfed/compare/v0.12.4...dev)
