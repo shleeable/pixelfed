@@ -543,7 +543,7 @@ class Helpers
                 $scope = 'unlisted';
             }
         }
-
+        $defaultCaption = config_cache('database.default') === 'mysql' ? null : "";
         $status = Status::updateOrCreate(
             [
                 'uri' => $url,
@@ -551,7 +551,8 @@ class Helpers
                 'profile_id' => $pid,
                 'url' => $url,
                 'object_url' => $id,
-                'caption' => isset($activity['content']) ? Purify::clean(strip_tags($activity['content'])) : null,
+                'caption' => isset($activity['content']) ? Purify::clean(strip_tags($activity['content'])) : $defaultCaption,
+                'rendered' => $defaultCaption,
                 'created_at' => Carbon::parse($ts)->tz('UTC'),
                 'in_reply_to_id' => $reply_to,
                 'local' => false,
@@ -688,12 +689,14 @@ class Helpers
             return $option['replies']['totalItems'] ?? 0;
         })->toArray();
 
+        $defaultCaption = config_cache('database.default') === 'mysql' ? null : "";
         $status = new Status;
         $status->profile_id = $profile->id;
         $status->url = isset($res['url']) ? $res['url'] : $url;
         $status->uri = isset($res['url']) ? $res['url'] : $url;
         $status->object_url = $id;
-        $status->caption = strip_tags(Purify::clean($res['content']));
+        $status->caption = strip_tags(Purify::clean($res['content'])) ?? $defaultCaption;
+        $status->rendered = $defaultCaption;
         $status->created_at = Carbon::parse($ts)->tz('UTC');
         $status->in_reply_to_id = null;
         $status->local = false;

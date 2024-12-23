@@ -1292,13 +1292,14 @@ class ApiV1Dot1Controller extends Controller
         if ($user->last_active_at == null) {
             return [];
         }
-
-        $content = $request->filled('status') ? strip_tags(Purify::clean($request->input('status'))) : null;
+        $defaultCaption = config_cache('database.default') === 'mysql' ? null : "";
+        $content = $request->filled('status') ? strip_tags(Purify::clean($request->input('status'))) : $defaultCaption;
         $cw = $user->profile->cw == true ? true : $request->boolean('sensitive', false);
         $spoilerText = $cw && $request->filled('spoiler_text') ? $request->input('spoiler_text') : null;
 
         $status = new Status;
         $status->caption = $content;
+        $status->rendered = $defaultCaption;
         $status->profile_id = $user->profile_id;
         $status->is_nsfw = $cw;
         $status->cw_summary = $spoilerText;
