@@ -629,9 +629,6 @@ class ApiV1Dot1Controller extends Controller
             abort_if(BouncerService::checkIp($request->ip()), 404);
         }
 
-        $rl = RateLimiter::attempt('pf:apiv1.1:iarc:'.$request->ip(), config('pixelfed.app_registration_confirm_rate_limit_attempts', 20), function () {}, config('pixelfed.app_registration_confirm_rate_limit_decay', 1800));
-        abort_if(! $rl, 429, 'Too many requests');
-
         $request->validate([
             'user_token' => 'required',
             'random_token' => 'required',
@@ -658,7 +655,7 @@ class ApiV1Dot1Controller extends Controller
         $user->last_active_at = now();
         $user->save();
 
-        $token = $user->createToken('Pixelfed', ['read', 'write', 'follow', 'admin:read', 'admin:write', 'push']);
+        $token = $user->createToken('Pixelfed', ['read', 'write', 'follow', 'push']);
 
         return response()->json([
             'access_token' => $token->accessToken,
@@ -1292,7 +1289,7 @@ class ApiV1Dot1Controller extends Controller
         if ($user->last_active_at == null) {
             return [];
         }
-        $defaultCaption = "";
+        $defaultCaption = '';
         $content = $request->filled('status') ? strip_tags(Purify::clean($request->input('status'))) : $defaultCaption;
         $cw = $user->profile->cw == true ? true : $request->boolean('sensitive', false);
         $spoilerText = $cw && $request->filled('spoiler_text') ? $request->input('spoiler_text') : null;
