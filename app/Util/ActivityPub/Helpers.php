@@ -689,7 +689,7 @@ class Helpers
             return $option['replies']['totalItems'] ?? 0;
         })->toArray();
 
-        $defaultCaption = config_cache('database.default') === 'mysql' ? null : "";
+        $defaultCaption = "";
         $status = new Status;
         $status->profile_id = $profile->id;
         $status->url = isset($res['url']) ? $res['url'] : $url;

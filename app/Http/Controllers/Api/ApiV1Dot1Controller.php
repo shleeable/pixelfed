@@ -1292,7 +1292,7 @@ class ApiV1Dot1Controller extends Controller
         if ($user->last_active_at == null) {
             return [];
         }
-        $defaultCaption = config_cache('database.default') === 'mysql' ? null : "";
+        $defaultCaption = "";
         $content = $request->filled('status') ? strip_tags(Purify::clean($request->input('status'))) : $defaultCaption;
         $cw = $user->profile->cw == true ? true : $request->boolean('sensitive', false);
         $spoilerText = $cw && $request->filled('spoiler_text') ? $request->input('spoiler_text') : null;

@@ -3494,7 +3494,7 @@ class ApiV1Controller extends Controller
             return [];
         }
 
-        $defaultCaption = config_cache('database.default') === 'mysql' ? null : "";
+        $defaultCaption = "";
         $content = $request->filled('status') ? strip_tags($request->input('status')) : $defaultCaption;
         $cw = $user->profile->cw == true ? true : $request->boolean('sensitive', false);
         $spoilerText = $cw && $request->filled('spoiler_text') ? $request->input('spoiler_text') : null;
