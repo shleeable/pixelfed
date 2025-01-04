@@ -1161,7 +1161,7 @@ class Helpers
     {
         $res = self::fetchProfileFromUrl($url);
 
-        if (! self::isValidProfileData($res, $url)) {
+        if (! $res || ! self::isValidProfileData($res, $url)) {
             return null;
         }
 
