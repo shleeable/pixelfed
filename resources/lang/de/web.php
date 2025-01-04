@@ -97,7 +97,7 @@ return [
 		'modlog' => 'modlog',
 		'post' => 'Beitrag',
 		'story' => 'Story',
-		'noneFound' => 'Keine Benachrichtigungen',
+		'noneFound' => 'Keine Benachrichtigungen vorhanden',
 	],
 
 	'post' => [
@@ -180,10 +180,10 @@ return [
 		'peopleYouMayKnow' => 'Leute, die du vielleicht kennst',
 		
 		'onboarding' => [
-			'welcome' => 'Willkommen',
-			'thisIsYourHomeFeed' => 'Dies ist deine Startseite, ein chronologischer Strom von Beiträgen von Accounts, denen du folgst.',
-			'letUsHelpYouFind' => 'Lass uns dir helfen, ein paar interessante Leute zu finden, denen du folgen kannst'
-			'refreshFeed' => 'Aktualisiere meinen Feed',
+			'welcome' => 'Herzlich Willkommen',
+			'thisIsYourHomeFeed' => 'Dies ist dein Heim-Feed, ein chronologischer Feed von Beiträgen aus den Konten, denen du folgst.',
+			'letUsHelpYouFind' => 'Lass uns dir helfen, einige interessante Leute zu finden, denen du folgen kannst',
+			'refreshFeed' => 'Feed aktualisieren',
 		],
 	],
 
