@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/pixelfed/pixelfed/compare/v0.12.3...dev)
 
+
+### Features
+- WebGL photo filters ([#5374](https://github.com/pixelfed/pixelfed/pull/5374))
+
 ### OAuth
 - Fix oauth oob (urn:ietf:wg:oauth:2.0:oob) support. ([8afbdb03](https://github.com/pixelfed/pixelfed/commit/8afbdb03))
 
@@ -19,6 +23,9 @@
 - Update StatusStatelessTransformer, refactor the caption field to be compliant with the MastoAPI. Fixes #5364 ([79039ba5](https://github.com/pixelfed/pixelfed/commit/79039ba5))
 - Update mailgun config, add endpoint and scheme ([271d5114](https://github.com/pixelfed/pixelfed/commit/271d5114))
 - Update search and status logic to fix postgres bugs ([8c39ef4](https://github.com/pixelfed/pixelfed/commit/8c39ef4))
+- Update db, fix sqlite migrations ([#5379](https://github.com/pixelfed/pixelfed/pull/5379))
+- Update CatchUnoptimizedMedia command, make 1hr limit opt-in ([99b15b73](https://github.com/pixelfed/pixelfed/commit/99b15b73))
+- Update IG, fix Instagram import. Closes #5411 ([fd434aec](https://github.com/pixelfed/pixelfed/commit/fd434aec))
 -  ([](https://github.com/pixelfed/pixelfed/commit/))
 
 ## [v0.12.4 (2024-11-08)](https://github.com/pixelfed/pixelfed/compare/v0.12.4...dev)
