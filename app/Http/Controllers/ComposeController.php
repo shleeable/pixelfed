@@ -570,7 +570,7 @@ class ComposeController extends Controller
             $status->cw_summary = $request->input('spoiler_text');
         }
 
-        $defaultCaption = config_cache('database.default') === 'mysql' ? null : "";
+        $defaultCaption = "";
         $status->caption = strip_tags($request->input('caption')) ?? $defaultCaption;
         $status->rendered = $defaultCaption;
         $status->scope = 'draft';
