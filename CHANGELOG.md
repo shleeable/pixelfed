@@ -2,6 +2,9 @@
 
 ## [Unreleased](https://github.com/pixelfed/pixelfed/compare/v0.12.3...dev)
 
+### OAuth
+- Fix oauth oob (urn:ietf:wg:oauth:2.0:oob) support. ([8afbdb03](https://github.com/pixelfed/pixelfed/commit/8afbdb03))
+
 ### Updates
 - Update AP helpers, reject statuses with invalid dates ([960f3849](https://github.com/pixelfed/pixelfed/commit/960f3849))
 - Update DirectMessage API, fix broken threading ([044d410c](https://github.com/pixelfed/pixelfed/commit/044d410c))
@@ -15,6 +18,7 @@
 - Update UserVerifyEmail command ([77da9ad8](https://github.com/pixelfed/pixelfed/commit/77da9ad8))
 - Update StatusStatelessTransformer, refactor the caption field to be compliant with the MastoAPI. Fixes #5364 ([79039ba5](https://github.com/pixelfed/pixelfed/commit/79039ba5))
 - Update mailgun config, add endpoint and scheme ([271d5114](https://github.com/pixelfed/pixelfed/commit/271d5114))
+- Update search and status logic to fix postgres bugs ([8c39ef4](https://github.com/pixelfed/pixelfed/commit/8c39ef4))
 -  ([](https://github.com/pixelfed/pixelfed/commit/))
 
 ## [v0.12.4 (2024-11-08)](https://github.com/pixelfed/pixelfed/compare/v0.12.4...dev)
