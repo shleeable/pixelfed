@@ -137,7 +137,10 @@ class ApiV1Controller extends Controller
             'redirect_uris' => 'required',
         ]);
 
-        $uris = implode(',', explode('\n', $request->redirect_uris));
+        $uris = collect(explode("\n", $request->redirect_uris))
+            ->map('urldecode')
+            ->filter()
+            ->join(',');
 
         $client = Passport::client()->forceFill([
             'user_id' => null,
@@ -3494,7 +3497,7 @@ class ApiV1Controller extends Controller
             return [];
         }
 
-        $defaultCaption = "";
+        $defaultCaption = '';
         $content = $request->filled('status') ? strip_tags($request->input('status')) : $defaultCaption;
         $cw = $user->profile->cw == true ? true : $request->boolean('sensitive', false);
         $spoilerText = $cw && $request->filled('spoiler_text') ? $request->input('spoiler_text') : null;
@@ -3687,7 +3690,7 @@ class ApiV1Controller extends Controller
             }
         }
 
-        $defaultCaption = config_cache('database.default') === 'mysql' ? null : "";
+        $defaultCaption = config_cache('database.default') === 'mysql' ? null : '';
         $share = Status::firstOrCreate([
             'caption' => $defaultCaption,
             'rendered' => $defaultCaption,
