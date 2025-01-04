@@ -40,10 +40,11 @@ class CatchUnoptimizedMedia extends Command
      */
     public function handle()
     {
+        $hasLimit = (bool) config('media.image_optimize.catch_unoptimized_media_hour_limit');
         Media::whereNull('processed_at')
-            // This is commented out because Instagram imported posts would not get uploaded to remote storage
-			// ->where('created_at', '>', now()->subHours(1))
-            ->whereNull('remote_url')
+            ->when($hasLimit, function($q, $hasLimit) {
+                $q->where('created_at', '>', now()->subHours(1));
+            })->whereNull('remote_url')
             ->whereNotNull('status_id')
             ->whereNotNull('media_path')
             ->whereIn('mime', [
