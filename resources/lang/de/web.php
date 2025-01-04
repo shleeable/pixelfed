@@ -178,6 +178,7 @@ return [
 
 	'timeline' => [
 		'peopleYouMayKnow' => 'Leute, die du vielleicht kennst',
+
 		'onboarding' => [
 			'welcome' => 'Herzlich Willkommen',
 			'thisIsYourHomeFeed' => 'Dies ist dein Heim-Feed, ein chronologischer Feed von Beiträgen aus den Konten, denen du folgst.',
