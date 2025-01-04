@@ -13,6 +13,7 @@ return [
 		'shared' => 'Compartilhado',
 		'shares' => 'Compartilhamentos',
 		'unshare' => 'Desfazer compartilhamento',
+		'bookmark' => 'Favoritar',
 
 		'cancel' => 'Cancelar',
 		'copyLink' => 'Copiar link',
@@ -23,6 +24,10 @@ return [
 		'other' => 'Outro',
 		'readMore' => 'Leia mais',
 		'success' => 'Sucesso',
+		'proceed' => 'Continuar',
+		'next' => 'Próximo',
+		'close' => 'Fechar',
+		'clickHere' => 'clique aqui',
 
 		'sensitive' => 'Sensível',
 		'sensitiveContent' => 'Conteúdo sensível',
@@ -48,11 +53,11 @@ return [
 		'directMessages' => 'Mensagens privadas',
 		'notifications' => 'Notificações',
 		'groups' => 'Grupos',
-		'stories' => 'Histórias',
+		'stories' => 'Stories',
 
 		// Self links
 		'profile' => 'Perfil',
-		'drive' => 'Mídias',
+		'drive' => 'Drive',
 		'settings' => 'Configurações',
 		'compose' => 'Criar novo',
 		'logout' => 'Sair',
@@ -85,7 +90,7 @@ return [
 		'sentA' => 'enviou um',
 
 		'followed' => 'seguiu',
-		'mentioned' => 'mencionado',
+		'mentioned' => 'mencionou',
 		'you' => 'você',
 
 		'yourApplication' => 'Sua inscrição para participar',
@@ -97,6 +102,7 @@ return [
 		'modlog' => 'histórico de moderação',
 		'post' => 'publicação',
 		'story' => 'história',
+		'noneFound' => 'Sem notificação',
 	],
 
 	'post' => [
@@ -176,11 +182,27 @@ return [
 	],
 
 	'timeline' => [
-		'peopleYouMayKnow' => 'Pessoas que você talvez conheça'
+		'peopleYouMayKnow' => 'Pessoas que você talvez conheça',
+
+		'onboarding' => [
+			'welcome' => 'Boas vindas',
+			'thisIsYourHomeFeed' => 'Esse é seu feed principal, onde as publicações das contas que você segue aparecem cronologicamente.',
+			'letUsHelpYouFind' => 'Deixe-nos te ajudar a encontrar pessoas legais para seguir',
+			'refreshFeed' => 'Atualizar meu feed',
+		],
 	],
 
 	'hashtags' => [
 		'emptyFeed' => 'Não encontramos nenhuma publicação com esta hashtag'
+	],
+
+	'report' => [
+		'report' => 'Denunciar',
+		'selectReason' => 'Selecione um motivo',
+		'reported' => 'Denunciado',
+		'sendingReport' => 'Enviando denúncia',
+		'thanksMsg' => 'Agradecemos a denúncia; pessoas como você nos ajudam a manter a comunidade segura!',
+		'contactAdminMsg' => 'Se quiser contatar um administrador por causa desta publicação ou denúncia',
 	],
 
 ];
