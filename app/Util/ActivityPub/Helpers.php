@@ -189,7 +189,7 @@ class Helpers
     /**
      * Normalize URL input
      */
-    private static function normalizeUrl(?string $url): ?string
+    public static function normalizeUrl(?string $url): ?string
     {
         if (is_array($url) && ! empty($url)) {
             $url = $url[0];
@@ -201,7 +201,7 @@ class Helpers
     /**
      * Validate basic URI requirements
      */
-    private static function isValidUri(Uri $uri): bool
+    public static function isValidUri(Uri $uri): bool
     {
         return $uri && $uri->getScheme() === 'https';
     }
@@ -209,7 +209,7 @@ class Helpers
     /**
      * Validate host requirements
      */
-    private static function isValidHost(?string $host): bool
+    public static function isValidHost(?string $host): bool
     {
         if (! $host || $host === '') {
             return false;
@@ -233,7 +233,7 @@ class Helpers
     /**
      * Check DNS and banned status if required
      */
-    private static function passesSecurityChecks(string $host, bool $disableDNSCheck, bool $forceBanCheck): bool
+    public static function passesSecurityChecks(string $host, bool $disableDNSCheck, bool $forceBanCheck): bool
     {
         if ($disableDNSCheck !== true && self::shouldCheckDNS()) {
             if (! self::hasValidDNS($host)) {
@@ -253,7 +253,7 @@ class Helpers
     /**
      * Check if DNS validation is required
      */
-    private static function shouldCheckDNS(): bool
+    public static function shouldCheckDNS(): bool
     {
         return app()->environment() === 'production' &&
                (bool) config('security.url.verify_dns');
@@ -262,7 +262,7 @@ class Helpers
     /**
      * Validate domain DNS records
      */
-    private static function hasValidDNS(string $host): bool
+    public static function hasValidDNS(string $host): bool
     {
         $hash = hash('sha256', $host);
         $key = self::URL_CACHE_PREFIX."valid-dns:sha256-{$hash}";
@@ -275,7 +275,7 @@ class Helpers
     /**
      * Check if domain bans should be validated
      */
-    private static function shouldCheckBans(): bool
+    public static function shouldCheckBans(): bool
     {
         return app()->environment() === 'production';
     }
@@ -283,7 +283,7 @@ class Helpers
     /**
      * Check if host is in banned domains list
      */
-    private static function isHostBanned(string $host): bool
+    public static function isHostBanned(string $host): bool
     {
         $bannedInstances = InstanceService::getBannedDomains();
 
@@ -293,7 +293,7 @@ class Helpers
     /**
      * Validate local URL
      */
-    private static function validateLocalUrl(string $url): string|bool
+    public static function validateLocalUrl(string $url): string|bool
     {
         $url = self::validateUrl($url);
         if ($url) {
@@ -402,7 +402,7 @@ class Helpers
     /**
      * Find existing status by URL
      */
-    private static function findExistingStatus(string $url): ?Status
+    public static function findExistingStatus(string $url): ?Status
     {
         $host = parse_url($url, PHP_URL_HOST);
 
@@ -424,7 +424,7 @@ class Helpers
     /**
      * Create a new status from ActivityPub data
      */
-    private static function createStatusFromUrl(string $url, bool $replyTo): ?Status
+    public static function createStatusFromUrl(string $url, bool $replyTo): ?Status
     {
         $res = self::fetchFromUrl($url);
 
@@ -473,7 +473,7 @@ class Helpers
     /**
      * Validate status data
      */
-    private static function isValidStatusData(?array $res): bool
+    public static function isValidStatusData(?array $res): bool
     {
         return $res &&
                ! empty($res) &&
@@ -485,7 +485,7 @@ class Helpers
     /**
      * Check if content passes filters
      */
-    private static function passesContentFilters(array $res): bool
+    public static function passesContentFilters(array $res): bool
     {
         if (! config('autospam.live_filters.enabled')) {
             return true;
@@ -512,7 +512,7 @@ class Helpers
     /**
      * Get profile for status
      */
-    private static function getStatusProfile(array $activity): ?Profile
+    public static function getStatusProfile(array $activity): ?Profile
     {
         if (! isset($activity['object']['attributedTo'])) {
             return null;
@@ -526,7 +526,7 @@ class Helpers
     /**
      * Extract attributed to value
      */
-    private static function extractAttributedTo(string|array $attributedTo): ?string
+    public static function extractAttributedTo(string|array $attributedTo): ?string
     {
         if (is_string($attributedTo)) {
             return $attributedTo;
@@ -545,7 +545,7 @@ class Helpers
     /**
      * Validate status URLs match
      */
-    private static function validateStatusUrls(string $url, array $activity): bool
+    public static function validateStatusUrls(string $url, array $activity): bool
     {
         $id = isset($activity['id']) ?
             self::pluckval($activity['id']) :
@@ -562,7 +562,7 @@ class Helpers
     /**
      * Get reply-to status ID
      */
-    private static function getReplyToId(array $activity, Profile $profile, bool $replyTo): ?int
+    public static function getReplyToId(array $activity, Profile $profile, bool $replyTo): ?int
     {
         $inReplyTo = $activity['object']['inReplyTo'] ?? null;
 
@@ -627,7 +627,7 @@ class Helpers
     /**
      * Get status ID from activity
      */
-    private static function getStatusId(array $activity, string $url): string
+    public static function getStatusId(array $activity, string $url): string
     {
         return isset($activity['id']) ?
             self::pluckval($activity['id']) :
@@ -637,7 +637,7 @@ class Helpers
     /**
      * Get status URL from activity
      */
-    private static function getStatusUrl(array $activity, string $id): string
+    public static function getStatusUrl(array $activity, string $id): string
     {
         return isset($activity['url']) && is_string($activity['url']) ?
             self::pluckval($activity['url']) :
@@ -647,7 +647,7 @@ class Helpers
     /**
      * Validate status domain consistency
      */
-    private static function validateStatusDomains(string $originalUrl, string $id, string $url): bool
+    public static function validateStatusDomains(string $originalUrl, string $id, string $url): bool
     {
         if (! self::validateUrl($id) || ! self::validateUrl($url)) {
             return false;
@@ -664,7 +664,7 @@ class Helpers
     /**
      * Create or update status record
      */
-    private static function createOrUpdateStatus(
+    public static function createOrUpdateStatus(
         string $url,
         Profile $profile,
         string $id,
@@ -704,7 +704,7 @@ class Helpers
     /**
      * Handle post-creation status processing
      */
-    private static function handleStatusPostProcessing(Status $status, int $profileId, string $url): void
+    public static function handleStatusPostProcessing(Status $status, int $profileId, string $url): void
     {
         if (config('instance.timeline.network.cached') &&
             self::isEligibleForNetwork($status)
@@ -730,7 +730,7 @@ class Helpers
     /**
      * Check if status is eligible for network timeline
      */
-    private static function isEligibleForNetwork(Status $status): bool
+    public static function isEligibleForNetwork(Status $status): bool
     {
         return $status->in_reply_to_id === null &&
                $status->reblog_of_id === null &&
@@ -742,7 +742,7 @@ class Helpers
     /**
      * Get filtered domains list
      */
-    private static function getFilteredDomains(): array
+    public static function getFilteredDomains(): array
     {
         return collect(InstanceService::getBannedDomains())
             ->merge(InstanceService::getUnlistedDomains())
@@ -818,7 +818,7 @@ class Helpers
         return $scope;
     }
 
-    private static function storePoll($profile, $res, $url, $ts, $reply_to, $cw, $scope, $id)
+    public static function storePoll($profile, $res, $url, $ts, $reply_to, $cw, $scope, $id)
     {
         if (! isset($res['endTime']) || ! isset($res['oneOf']) || ! is_array($res['oneOf']) || count($res['oneOf']) > 4) {
             return;
@@ -904,7 +904,7 @@ class Helpers
     /**
      * Get attachments from ActivityPub data
      */
-    private static function getAttachments(array $data): array
+    public static function getAttachments(array $data): array
     {
         return isset($data['object']) ?
             $data['object']['attachment'] :
@@ -914,7 +914,7 @@ class Helpers
     /**
      * Validate individual attachment
      */
-    private static function isValidAttachment(array $media, array $allowedTypes): bool
+    public static function isValidAttachment(array $media, array $allowedTypes): bool
     {
         $type = $media['mediaType'];
         $url = $media['url'];
@@ -926,7 +926,7 @@ class Helpers
     /**
      * Create media attachment record
      */
-    private static function createMediaAttachment(array $media, Status $status, int $key): Media
+    public static function createMediaAttachment(array $media, Status $status, int $key): Media
     {
         $mediaModel = new Media;
 
@@ -941,7 +941,7 @@ class Helpers
     /**
      * Set basic media attributes
      */
-    private static function setBasicMediaAttributes(Media $media, array $data, Status $status, int $key): void
+    public static function setBasicMediaAttributes(Media $media, array $data, Status $status, int $key): void
     {
         $media->remote_media = true;
         $media->status_id = $status->id;
@@ -957,7 +957,7 @@ class Helpers
     /**
      * Set optional media attributes
      */
-    private static function setOptionalMediaAttributes(Media $media, array $data): void
+    public static function setOptionalMediaAttributes(Media $media, array $data): void
     {
         $media->blurhash = $data['blurhash'] ?? null;
         $media->caption = isset($data['name']) ?
@@ -980,7 +980,7 @@ class Helpers
     /**
      * Handle media storage processing
      */
-    private static function handleMediaStorage(Media $media): void
+    public static function handleMediaStorage(Media $media): void
     {
         if ((bool) config_cache('pixelfed.cloud_storage')) {
             MediaStoragePipeline::dispatch($media);
@@ -990,7 +990,7 @@ class Helpers
     /**
      * Validate attachment collection
      */
-    private static function validateAttachmentCollection(array $attachments, array $mediaTypes, array $mimeTypes): bool
+    public static function validateAttachmentCollection(array $attachments, array $mediaTypes, array $mimeTypes): bool
     {
         return Validator::make($attachments, [
             '*.type' => [
@@ -1014,7 +1014,7 @@ class Helpers
     /**
      * Get supported media types
      */
-    private static function getSupportedMediaTypes(): array
+    public static function getSupportedMediaTypes(): array
     {
         $mimeTypes = explode(',', config_cache('pixelfed.media_types'));
 
@@ -1026,7 +1026,7 @@ class Helpers
     /**
      * Process specific media type attachment
      */
-    private static function processMediaTypeAttachment(array $media, Status $status, int $order): ?Media
+    public static function processMediaTypeAttachment(array $media, Status $status, int $order): ?Media
     {
         if (! self::isValidMediaType($media)) {
             return null;
@@ -1042,7 +1042,7 @@ class Helpers
     /**
      * Validate media type
      */
-    private static function isValidMediaType(array $media): bool
+    public static function isValidMediaType(array $media): bool
     {
         $requiredFields = ['mediaType', 'url'];
 
@@ -1058,7 +1058,7 @@ class Helpers
     /**
      * Set media attributes
      */
-    private static function setMediaAttributes(Media $media, array $data, Status $status, int $order): void
+    public static function setMediaAttributes(Media $media, array $data, Status $status, int $order): void
     {
         $media->remote_media = true;
         $media->status_id = $status->id;
@@ -1113,7 +1113,7 @@ class Helpers
     /**
      * Check if domain is local
      */
-    private static function isLocalDomain(string $host): bool
+    public static function isLocalDomain(string $host): bool
     {
         return config('pixelfed.domain.app') == $host;
     }
@@ -1121,7 +1121,7 @@ class Helpers
     /**
      * Get local profile from URL
      */
-    private static function getLocalProfile(string $url): ?Profile
+    public static function getLocalProfile(string $url): ?Profile
     {
         $username = last(explode('/', $url));
 
@@ -1134,7 +1134,7 @@ class Helpers
     /**
      * Get existing or fetch new remote profile
      */
-    private static function getOrFetchRemoteProfile(string $url): ?Profile
+    public static function getOrFetchRemoteProfile(string $url): ?Profile
     {
         $profile = Profile::whereRemoteUrl($url)->first();
 
@@ -1148,7 +1148,7 @@ class Helpers
     /**
      * Check if profile needs to be fetched
      */
-    private static function needsFetch(?Profile $profile): bool
+    public static function needsFetch(?Profile $profile): bool
     {
         return ! $profile?->last_fetched_at ||
                $profile->last_fetched_at->lt(now()->subHours(24));
@@ -1192,7 +1192,7 @@ class Helpers
     /**
      * Validate profile data from ActivityPub
      */
-    private static function isValidProfileData(?array $res, string $url): bool
+    public static function isValidProfileData(?array $res, string $url): bool
     {
         if (! $res || ! isset($res['id']) || ! isset($res['inbox'])) {
             return false;
@@ -1211,7 +1211,7 @@ class Helpers
     /**
      * Extract username from profile data
      */
-    private static function extractUsername(array $res): ?string
+    public static function extractUsername(array $res): ?string
     {
         $username = $res['preferredUsername'] ?? $res['nickname'] ?? null;
 
@@ -1225,7 +1225,7 @@ class Helpers
     /**
      * Check if profile is banned
      */
-    private static function isProfileBanned(string $profileUrl): bool
+    public static function isProfileBanned(string $profileUrl): bool
     {
         return ModeratedProfile::whereProfileUrl($profileUrl)
             ->whereIsBanned(true)
@@ -1235,7 +1235,7 @@ class Helpers
     /**
      * Get or create federation instance
      */
-    private static function getOrCreateInstance(string $domain): Instance
+    public static function getOrCreateInstance(string $domain): Instance
     {
         $instance = Instance::updateOrCreate(['domain' => $domain]);
 
@@ -1250,7 +1250,7 @@ class Helpers
     /**
      * Handle moved profile references
      */
-    private static function handleMovedTo(array $res): ?int
+    public static function handleMovedTo(array $res): ?int
     {
         if (! isset($res['movedTo']) || ! self::validateUrl($res['movedTo'])) {
             return null;
@@ -1264,7 +1264,7 @@ class Helpers
     /**
      * Build profile data array for database
      */
-    private static function buildProfileData(array $res, string $webfinger, ?int $movedToPid): array
+    public static function buildProfileData(array $res, string $webfinger, ?int $movedToPid): array
     {
         return [
             'webfinger' => Purify::clean($webfinger),
@@ -1284,7 +1284,7 @@ class Helpers
     /**
      * Handle profile avatar updates
      */
-    private static function handleProfileAvatar(Profile $profile): void
+    public static function handleProfileAvatar(Profile $profile): void
     {
         if (! $profile->last_fetched_at ||
             $profile->last_fetched_at->lt(now()->subMonths(3))
