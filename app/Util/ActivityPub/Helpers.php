@@ -590,7 +590,9 @@ class Helpers
         $id = self::getStatusId($activity, $url);
         $url = self::getStatusUrl($activity, $id);
 
-        if (! self::validateStatusDomains($originalUrl, $id, $url)) {
+        if ((! isset($activity['type']) ||
+             in_array($activity['type'], ['Create', 'Note'])) &&
+            ! self::validateStatusDomains($originalUrl, $id, $url)) {
             throw new \Exception('Invalid status domains');
         }
 
