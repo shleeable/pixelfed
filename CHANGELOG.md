@@ -28,6 +28,8 @@
 - Update StatusTagsPipeline, fix hashtag bug and formatting ([d516b799](https://github.com/pixelfed/pixelfed/commit/d516b799))
 - Update CollectionController, fix showCollection signature ([4e1dd599](https://github.com/pixelfed/pixelfed/commit/4e1dd599))
 - Update ApiV1Dot1Controller, fix in-app registration ([56f17b99](https://github.com/pixelfed/pixelfed/commit/56f17b99))
+- Update VerifyCsrfToken middleware, add oauth token. Fixes #5426 ([79ebbc2d](https://github.com/pixelfed/pixelfed/commit/79ebbc2d))
+- Update AdminSettingsController, increase max photo size limit from 50MB to 1GB ([aa448354](https://github.com/pixelfed/pixelfed/commit/aa448354))
 -  ([](https://github.com/pixelfed/pixelfed/commit/))
 
 ## [v0.12.4 (2024-11-08)](https://github.com/pixelfed/pixelfed/compare/v0.12.4...dev)
