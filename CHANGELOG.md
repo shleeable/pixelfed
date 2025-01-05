@@ -2,6 +2,12 @@
 
 ## [Unreleased](https://github.com/pixelfed/pixelfed/compare/v0.12.3...dev)
 
+### Features
+- WebGL photo filters ([#5374](https://github.com/pixelfed/pixelfed/pull/5374))
+
+### OAuth
+- Fix oauth oob (urn:ietf:wg:oauth:2.0:oob) support. ([8afbdb03](https://github.com/pixelfed/pixelfed/commit/8afbdb03))
+
 ### Updates
 - Update AP helpers, reject statuses with invalid dates ([960f3849](https://github.com/pixelfed/pixelfed/commit/960f3849))
 - Update DirectMessage API, fix broken threading ([044d410c](https://github.com/pixelfed/pixelfed/commit/044d410c))
@@ -12,6 +18,19 @@
 - Update DirectMessageController, remove 72h limit for admins ([639df410](https://github.com/pixelfed/pixelfed/commit/639df410))
 - Update StatusService, fix newlines ([56c07b7a](https://github.com/pixelfed/pixelfed/commit/56c07b7a))
 - Update confirm email template, add plaintext link. Fixes #5375 ([45986707](https://github.com/pixelfed/pixelfed/commit/45986707))
+- Update UserVerifyEmail command ([77da9ad8](https://github.com/pixelfed/pixelfed/commit/77da9ad8))
+- Update StatusStatelessTransformer, refactor the caption field to be compliant with the MastoAPI. Fixes #5364 ([79039ba5](https://github.com/pixelfed/pixelfed/commit/79039ba5))
+- Update mailgun config, add endpoint and scheme ([271d5114](https://github.com/pixelfed/pixelfed/commit/271d5114))
+- Update search and status logic to fix postgres bugs ([8c39ef4](https://github.com/pixelfed/pixelfed/commit/8c39ef4))
+- Update db, fix sqlite migrations ([#5379](https://github.com/pixelfed/pixelfed/pull/5379))
+- Update CatchUnoptimizedMedia command, make 1hr limit opt-in ([99b15b73](https://github.com/pixelfed/pixelfed/commit/99b15b73))
+- Update IG, fix Instagram import. Closes #5411 ([fd434aec](https://github.com/pixelfed/pixelfed/commit/fd434aec))
+- Update StatusTagsPipeline, fix hashtag bug and formatting ([d516b799](https://github.com/pixelfed/pixelfed/commit/d516b799))
+- Update CollectionController, fix showCollection signature ([4e1dd599](https://github.com/pixelfed/pixelfed/commit/4e1dd599))
+- Update ApiV1Dot1Controller, fix in-app registration ([56f17b99](https://github.com/pixelfed/pixelfed/commit/56f17b99))
+- Update VerifyCsrfToken middleware, add oauth token. Fixes #5426 ([79ebbc2d](https://github.com/pixelfed/pixelfed/commit/79ebbc2d))
+- Update AdminSettingsController, increase max photo size limit from 50MB to 1GB ([aa448354](https://github.com/pixelfed/pixelfed/commit/aa448354))
+- Update BearerTokenResponse, return scopes in /oauth/token endpoint. Fixes #5286 ([d8f5c302](https://github.com/pixelfed/pixelfed/commit/d8f5c302))
 -  ([](https://github.com/pixelfed/pixelfed/commit/))
 
 ## [v0.12.4 (2024-11-08)](https://github.com/pixelfed/pixelfed/compare/v0.12.4...dev)

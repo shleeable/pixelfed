@@ -137,7 +137,10 @@ class ApiV1Controller extends Controller
             'redirect_uris' => 'required',
         ]);
 
-        $uris = implode(',', explode('\n', $request->redirect_uris));
+        $uris = collect(explode("\n", $request->redirect_uris))
+            ->map('urldecode')
+            ->filter()
+            ->join(',');
 
         $client = Passport::client()->forceFill([
             'user_id' => null,
@@ -3509,6 +3512,7 @@ class ApiV1Controller extends Controller
 
             $status = new Status;
             $status->caption = $content;
+            $status->rendered = $defaultCaption;
             $status->scope = $visibility;
             $status->visibility = $visibility;
             $status->profile_id = $user->profile_id;
@@ -3533,6 +3537,7 @@ class ApiV1Controller extends Controller
             if (! $in_reply_to_id) {
                 $status = new Status;
                 $status->caption = $content;
+                $status->rendered = $defaultCaption;
                 $status->profile_id = $user->profile_id;
                 $status->is_nsfw = $cw;
                 $status->cw_summary = $spoilerText;
@@ -3685,7 +3690,10 @@ class ApiV1Controller extends Controller
             }
         }
 
+        $defaultCaption = config_cache('database.default') === 'mysql' ? null : '';
         $share = Status::firstOrCreate([
+            'caption' => $defaultCaption,
+            'rendered' => $defaultCaption,
             'profile_id' => $user->profile_id,
             'reblog_of_id' => $status->id,
             'type' => 'share',
