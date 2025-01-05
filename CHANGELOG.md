@@ -31,6 +31,8 @@
 - Update VerifyCsrfToken middleware, add oauth token. Fixes #5426 ([79ebbc2d](https://github.com/pixelfed/pixelfed/commit/79ebbc2d))
 - Update AdminSettingsController, increase max photo size limit from 50MB to 1GB ([aa448354](https://github.com/pixelfed/pixelfed/commit/aa448354))
 - Update BearerTokenResponse, return scopes in /oauth/token endpoint. Fixes #5286 ([d8f5c302](https://github.com/pixelfed/pixelfed/commit/d8f5c302))
+- Update hashtag component, fix missing video thumbnails ([witten](https://github.com/witten)) ([#5427](https://github.com/pixelfed/pixelfed/pull/5427))
+- Update AP Status Transformer, fix inReplyTo. Fixes #5409 ([83cc932f](https://github.com/pixelfed/pixelfed/commit/83cc932f))
 -  ([](https://github.com/pixelfed/pixelfed/commit/))
 
 ## [v0.12.4 (2024-11-08)](https://github.com/pixelfed/pixelfed/compare/v0.12.4...dev)
