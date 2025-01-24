@@ -34,6 +34,10 @@
 - Update hashtag component, fix missing video thumbnails ([witten](https://github.com/witten)) ([#5427](https://github.com/pixelfed/pixelfed/pull/5427))
 - Update AP Status Transformer, fix inReplyTo. Fixes #5409 ([83cc932f](https://github.com/pixelfed/pixelfed/commit/83cc932f))
 - Update Data Export, refactor following/follower and statuses exports to allow accounts of any size with api entity instead of ap ([0d25917c](https://github.com/pixelfed/pixelfed/commit/0d25917c))
+- Update oauth/token, fix scope to be space separated string instead of array ([4ce6e610](https://github.com/pixelfed/pixelfed/commit/4ce6e610))
+- Update SearchApiV2Service, fix hashtag search ([83c1a7fd](https://github.com/pixelfed/pixelfed/commit/83c1a7fd))
+- Update AP Helpers, fix comment bug ([22eae69f](https://github.com/pixelfed/pixelfed/commit/22eae69f))
+- Update ComposeController, add max_media_attachments attribute ([17918cbe](https://github.com/pixelfed/pixelfed/commit/17918cbe))
 -  ([](https://github.com/pixelfed/pixelfed/commit/))
 
 ## [v0.12.4 (2024-11-08)](https://github.com/pixelfed/pixelfed/compare/v0.12.4...dev)
