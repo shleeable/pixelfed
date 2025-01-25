@@ -3006,6 +3006,8 @@ class ApiV1Controller extends Controller
             'scope' => 'nullable|in:inbox,sent,requests',
         ]);
 
+        return [];
+
         $limit = $request->input('limit', 20);
         $scope = $request->input('scope', 'inbox');
         $user = $request->user();
