@@ -30,6 +30,7 @@ class DirectMessageController extends Controller
 {
     public function __construct()
     {
+        abort(404);
         $this->middleware('auth');
     }
 
