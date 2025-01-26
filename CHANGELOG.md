@@ -38,6 +38,7 @@
 - Update SearchApiV2Service, fix hashtag search ([83c1a7fd](https://github.com/pixelfed/pixelfed/commit/83c1a7fd))
 - Update AP Helpers, fix comment bug ([22eae69f](https://github.com/pixelfed/pixelfed/commit/22eae69f))
 - Update ComposeController, add max_media_attachments attribute ([17918cbe](https://github.com/pixelfed/pixelfed/commit/17918cbe))
+- Fix GroupController, move groups enabled check to each method to fix route:list ([f260572e](https://github.com/pixelfed/pixelfed/commit/f260572e))
 -  ([](https://github.com/pixelfed/pixelfed/commit/))
 
 ## [v0.12.4 (2024-11-08)](https://github.com/pixelfed/pixelfed/compare/v0.12.4...dev)
