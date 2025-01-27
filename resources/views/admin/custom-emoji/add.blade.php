@@ -1,7 +1,6 @@
 @extends('admin.partial.template-full')
 
 @section('section')
-</div>
 <div class="header bg-primary pb-3 mt-n4">
 	<div class="container-fluid">
 		<div class="header-body">
