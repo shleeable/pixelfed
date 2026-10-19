@@ -9,7 +9,6 @@ use Illuminate\Support\Manager;
  * Resolves the active captcha provider based on the "captcha.driver" config
  * value and proxies the provider-agnostic operations to it.
  *
- * @method string name()
  * @method bool isConfigured()
  * @method string responseField()
  * @method bool verify(array $input)

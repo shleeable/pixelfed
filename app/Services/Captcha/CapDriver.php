@@ -27,11 +27,6 @@ class CapDriver implements CaptchaDriver
      */
     private const string DEFAULT_WIDGET_VERSION = 'latest';
 
-    public function name(): string
-    {
-        return 'cap';
-    }
-
     public function isConfigured(): bool
     {
         return ! empty(config_cache('captcha.cap.endpoint'))

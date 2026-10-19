@@ -31,7 +31,6 @@ class CaptchaManagerTest extends TestCase
         $driver = $this->manager()->active();
 
         $this->assertInstanceOf(HCaptchaDriver::class, $driver);
-        $this->assertSame('hcaptcha', $driver->name());
         $this->assertSame('h-captcha-response', $driver->responseField());
     }
 
@@ -43,7 +42,6 @@ class CaptchaManagerTest extends TestCase
         $driver = $this->manager()->active();
 
         $this->assertInstanceOf(TurnstileDriver::class, $driver);
-        $this->assertSame('turnstile', $driver->name());
         $this->assertSame('cf-turnstile-response', $driver->responseField());
     }
 
@@ -55,7 +53,6 @@ class CaptchaManagerTest extends TestCase
         $driver = $this->manager()->active();
 
         $this->assertInstanceOf(CapDriver::class, $driver);
-        $this->assertSame('cap', $driver->name());
         $this->assertSame('cap-token', $driver->responseField());
     }
 
@@ -75,7 +72,6 @@ class CaptchaManagerTest extends TestCase
         $resolved = $this->manager()->active();
 
         $this->assertInstanceOf($class, $resolved);
-        $this->assertSame($driver, $resolved->name());
         $this->assertSame($field, $resolved->responseField());
     }
 
