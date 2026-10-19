@@ -11,8 +11,6 @@ use App\Http\Controllers\Admin\AdminMediaController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminSettingsController;
 use App\Http\Controllers\Admin\AdminUserController;
-use App\Http\Resources\AdminProfile;
-use App\Jobs\AdminPipeline\AdminProfileActionPipeline;
 use App\Mail\AdminMessageResponse;
 use App\Models\Contact;
 use App\Models\CustomEmoji;
@@ -685,59 +683,5 @@ class AdminController extends Controller
         $emojis = CustomEmoji::whereShortcode($id)->where('id', '!=', $emoji->id)->cursorPaginate(10);
 
         return view('admin.custom-emoji.duplicates', ['emoji' => $emoji, 'emojis' => $emojis]);
-    }
-
-    public function rolesHome(Request $request): View
-    {
-        return view('admin.roles.index');
-    }
-
-    public function rolesBrowse(Request $request): View
-    {
-        return view('admin.roles.browse');
-    }
-
-    public function profilesApiList(Request $request)
-    {
-        $this->validate($request, [
-            'filter' => 'sometimes|in:all,cw,unlisted,banned,newest',
-        ]);
-        $filter = $request->input('filter');
-
-        $res = Profile::whereNull('user_id')
-            ->when($filter, function ($q, $filter) {
-                if ($filter === 'cw') {
-                    return $q->where('cw', true);
-                }
-                if ($filter === 'unlisted') {
-                    return $q->where('unlisted', true);
-                }
-                if ($filter === 'banned') {
-                    return $q->where('status', 'banned');
-                }
-                if ($filter === 'newest') {
-                    return $q->orderByDesc('id');
-                }
-
-                return $q;
-            })
-            ->cursorPaginate(10)
-            ->withQueryString();
-
-        return AdminProfile::collection($res);
-    }
-
-    public function profilesHandleAction(Request $request): array
-    {
-        $this->validate($request, [
-            'id' => 'required|exists:profiles',
-            'action' => 'required|in:mark-all-cw,unlist-all,refetch,purge',
-        ]);
-
-        $profile = Profile::findOrFail($request->input('id'));
-        $action = $request->input('action');
-        AdminProfileActionPipeline::dispatch($profile, $action);
-
-        return [200];
     }
 }
