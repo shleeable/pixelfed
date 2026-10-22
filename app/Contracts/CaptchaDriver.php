@@ -9,11 +9,6 @@ namespace App\Contracts;
 interface CaptchaDriver
 {
     /**
-     * The machine name of the driver (e.g. "hcaptcha", "turnstile", "cap").
-     */
-    public function name(): string;
-
-    /**
      * Whether the driver has the credentials/config it needs to operate.
      */
     public function isConfigured(): bool;

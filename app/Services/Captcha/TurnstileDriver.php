@@ -17,11 +17,6 @@ class TurnstileDriver implements CaptchaDriver
 
     private const string SCRIPT_URL = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
 
-    public function name(): string
-    {
-        return 'turnstile';
-    }
-
     public function isConfigured(): bool
     {
         return ! empty(config_cache('captcha.turnstile.secret'))

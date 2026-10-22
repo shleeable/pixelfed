@@ -20,11 +20,6 @@ class HCaptchaDriver implements CaptchaDriver
 
     private const string SCRIPT_URL = 'https://js.hcaptcha.com/1/api.js';
 
-    public function name(): string
-    {
-        return 'hcaptcha';
-    }
-
     public function isConfigured(): bool
     {
         $secret = config_cache('captcha.hcaptcha.secret');
