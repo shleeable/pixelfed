@@ -37,9 +37,6 @@ class GroupFederationController extends Controller
                     'type' => 'Person',
                     'id' => $group->admin->permalink(),
                 ],
-                // 'endpoints' => [
-                // 	'sharedInbox' => config('app.url') . '/f/inbox'
-                // ],
                 'preferredUsername' => 'gid_'.$group->id,
                 'publicKey' => [
                     'id' => $group->permalink('#main-key'),
@@ -48,24 +45,6 @@ class GroupFederationController extends Controller
                 ],
                 'url' => $group->permalink(),
             ];
-
-            // Dead - after a return
-            // if ($group->metadata && isset($group->metadata['avatar'])) {
-            //     $res['icon'] = [
-            //         'type' => 'Image',
-            //         'url' => $group->metadata['avatar']['url'],
-            //     ];
-            // }
-
-            // if ($group->metadata && isset($group->metadata['header'])) {
-            //     $res['image'] = [
-            //         'type' => 'Image',
-            //         'url' => $group->metadata['header']['url'],
-            //     ];
-            // }
-            // ksort($res);
-
-            // return $res;
         });
     }
 
@@ -103,7 +82,6 @@ class GroupFederationController extends Controller
             ],
         ];
 
-        // ksort($res);
         return response()->json($res, 200, [], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 }
