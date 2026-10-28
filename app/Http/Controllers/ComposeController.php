@@ -11,7 +11,6 @@ use App\Models\Hashtag;
 use App\Models\Media;
 use App\Models\MediaTag;
 use App\Models\Notification;
-use App\Models\Poll;
 use App\Models\Profile;
 use App\Models\Status;
 use App\Services\AccountService;
@@ -885,40 +884,5 @@ class ComposeController extends Controller
             'pollOptions' => 'required|array|min:1|max:4',
         ]);
         abort(404);
-        abort_if(config('instance.polls.enabled') == false, 404, 'Polls not enabled');
-        abort_if($request->user()->has_roles && ! UserRoleService::can('can-post', $request->user()->id), 403, 'Invalid permissions for this action');
-
-        abort_if(Status::whereType('poll')
-            ->whereProfileId($request->user()->profile_id)
-            ->whereCaption($request->input('caption'))
-            ->where('created_at', '>', now()->subDays(2))
-            ->exists(), 422, 'Duplicate detected.');
-
-        $status = new Status;
-        $status->profile_id = $request->user()->profile_id;
-        $status->caption = $request->input('caption');
-        $status->visibility = 'draft';
-        $status->scope = 'draft';
-        $status->type = 'poll';
-        $status->local = true;
-        $status->save();
-
-        $poll = new Poll;
-        $poll->status_id = $status->id;
-        $poll->profile_id = $status->profile_id;
-        $poll->poll_options = $request->input('pollOptions');
-        $poll->expires_at = now()->addMinutes($request->input('expiry'));
-        $poll->cached_tallies = collect($poll->poll_options)->map(function ($o) {
-            return 0;
-        })->toArray();
-        $poll->save();
-
-        $status->visibility = $request->input('visibility');
-        $status->scope = $request->input('visibility');
-        $status->save();
-
-        NewStatusPipeline::dispatch($status);
-
-        return ['url' => $status->url()];
     }
 }
