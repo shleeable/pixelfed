@@ -7,7 +7,6 @@ use App\Models\AccountInterstitial;
 use App\Models\Bookmark;
 use App\Models\DirectMessage;
 use App\Models\DiscoverCategory;
-use App\Models\Profile;
 use App\Models\Status;
 use App\Models\User;
 use App\Services\BookmarkService;
@@ -292,76 +291,6 @@ class InternalApiController extends Controller
                 return $bookmark && isset($bookmark['id']);
             })
             ->values();
-
-        return response()->json($res);
-    }
-
-    public function accountStatuses(Request $request, $id): JsonResponse
-    {
-        $this->validate($request, [
-            'only_media' => 'nullable',
-            'pinned' => 'nullable',
-            'exclude_replies' => 'nullable',
-            'max_id' => 'nullable|integer|min:0|max:'.PHP_INT_MAX,
-            'since_id' => 'nullable|integer|min:0|max:'.PHP_INT_MAX,
-            'min_id' => 'nullable|integer|min:0|max:'.PHP_INT_MAX,
-            'limit' => 'nullable|integer|min:1|max:24',
-        ]);
-
-        $profile = Profile::whereNull('status')->findOrFail($id);
-
-        $limit = $request->limit ?? 9;
-        $max_id = $request->max_id;
-        $min_id = $request->min_id;
-        $scope = $request->only_media == true ?
-            ['photo', 'photo:album', 'video', 'video:album'] :
-            ['photo', 'photo:album', 'video', 'video:album', 'share', 'reply'];
-
-        if ($profile->is_private) {
-            if (! $request->user()) {
-                return response()->json([]);
-            }
-            $pid = $request->user()->profile->id;
-            $following = FollowerService::getFollowingIds($pid);
-            $visibility = in_array($profile->id, $following) === true ? ['public', 'unlisted', 'private'] : [];
-        } else {
-            if ($request->user() !== null) {
-                $pid = $request->user()->profile->id;
-                $following = FollowerService::getFollowingIds($pid);
-                $visibility = in_array($profile->id, $following) === true ? ['public', 'unlisted', 'private'] : ['public', 'unlisted'];
-            } else {
-                $visibility = ['public', 'unlisted'];
-            }
-        }
-
-        $dir = $min_id ? '>' : '<';
-        $id = $min_id ?? $max_id;
-        $timeline = Status::select(
-            'id',
-            'uri',
-            'caption',
-            'rendered',
-            'profile_id',
-            'type',
-            'in_reply_to_id',
-            'reblog_of_id',
-            'is_nsfw',
-            'likes_count',
-            'reblogs_count',
-            'scope',
-            'local',
-            'created_at',
-            'updated_at'
-        )->whereProfileId($profile->id)
-            ->whereIn('type', $scope)
-            ->where('id', $dir, $id)
-            ->whereIn('visibility', $visibility)
-            ->latest()
-            ->limit($limit)
-            ->get();
-
-        $resource = new Fractal\Resource\Collection($timeline, new StatusTransformer);
-        $res = $this->fractal->createData($resource)->toArray();
 
         return response()->json($res);
     }
